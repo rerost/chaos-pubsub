@@ -2,14 +2,6 @@
 
 
 [[projects]]
-  digest = "1:e4b30804a381d7603b8a344009987c1ba351c26043501b23b8c7ce21f0b67474"
-  name = "github.com/BurntSushi/toml"
-  packages = ["."]
-  pruneopts = ""
-  revision = "3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005"
-  version = "v0.3.1"
-
-[[projects]]
   digest = "1:e988ed0ca0d81f4d28772760c02ee95084961311291bdfefc1b04617c178b722"
   name = "github.com/fatih/color"
   packages = ["."]
@@ -26,38 +18,16 @@
   version = "v1.4.7"
 
 [[projects]]
-  digest = "1:b13707423743d41665fd23f0c36b2f37bb49c30e94adb813319c44188a51ba22"
-  name = "github.com/ghodss/yaml"
-  packages = ["."]
-  pruneopts = ""
-  revision = "0ca9ea5df5451ffdf184b4428c902747c2c11cd7"
-
-[[projects]]
-  digest = "1:107b233e45174dbab5b1324201d092ea9448e58243ab9f039e4c0f332e121e3a"
-  name = "github.com/golang/glog"
-  packages = ["."]
-  pruneopts = ""
-  revision = "23def4e6c14b4da8ac2ed8007337bc5eb5007998"
-
-[[projects]]
   digest = "1:3dd078fda7500c341bc26cfbc6c6a34614f295a2457149fc1045cab767cbcf18"
   name = "github.com/golang/protobuf"
   packages = [
-    "descriptor",
-    "jsonpb",
     "proto",
-    "protoc-gen-go",
     "protoc-gen-go/descriptor",
-    "protoc-gen-go/generator",
-    "protoc-gen-go/generator/internal/remap",
-    "protoc-gen-go/grpc",
-    "protoc-gen-go/plugin",
     "ptypes",
     "ptypes/any",
     "ptypes/duration",
-    "ptypes/struct",
+    "ptypes/empty",
     "ptypes/timestamp",
-    "ptypes/wrappers",
   ]
   pruneopts = ""
   revision = "aa810b61a9c79d51363740d207bb46cf8e620ed5"
@@ -86,35 +56,6 @@
   pruneopts = ""
   revision = "9a7ae3ba6b734d831e88c75966fd5e9c0abdeace"
   version = "v0.2.1"
-
-[[projects]]
-  digest = "1:9a0b2dd1f882668a3d7fbcd424eed269c383a16f1faa3a03d14e0dd5fba571b1"
-  name = "github.com/grpc-ecosystem/go-grpc-middleware"
-  packages = ["."]
-  pruneopts = ""
-  revision = "c250d6563d4d4c20252cd865923440e829844f4e"
-  version = "v1.0.0"
-
-[[projects]]
-  digest = "1:9171209145b55e835a761fb307df6443ffa7c347c89ed4e5613e0893dffbeeae"
-  name = "github.com/grpc-ecosystem/grpc-gateway"
-  packages = [
-    "codegenerator",
-    "internal",
-    "protoc-gen-grpc-gateway",
-    "protoc-gen-grpc-gateway/descriptor",
-    "protoc-gen-grpc-gateway/generator",
-    "protoc-gen-grpc-gateway/gengateway",
-    "protoc-gen-grpc-gateway/httprule",
-    "protoc-gen-swagger",
-    "protoc-gen-swagger/genswagger",
-    "protoc-gen-swagger/options",
-    "runtime",
-    "utilities",
-  ]
-  pruneopts = ""
-  revision = "b7a5640779183161e8d6c3e51f60f0859b5559ba"
-  version = "v1.7.0"
 
 [[projects]]
   digest = "1:d14365c51dd1d34d5c79833ec91413bfbb166be978724f15701e17080dc06dec"
@@ -197,17 +138,8 @@
   name = "github.com/izumin5210/grapi"
   packages = [
     "cmd/grapi",
-    "cmd/grapi-gen-command",
-    "cmd/grapi-gen-command/template",
-    "cmd/grapi-gen-scaffold-service",
-    "cmd/grapi-gen-service",
-    "cmd/grapi-gen-type",
-    "cmd/grapi-gen-type/di",
-    "cmd/grapi-gen-type/template",
     "pkg/cli",
     "pkg/excmd",
-    "pkg/gencmd",
-    "pkg/gencmd/util",
     "pkg/grapicmd",
     "pkg/grapicmd/cmd",
     "pkg/grapicmd/di",
@@ -217,12 +149,7 @@
     "pkg/grapicmd/internal/module/script",
     "pkg/grapicmd/internal/usecase",
     "pkg/grapicmd/util/fs",
-    "pkg/grapiserver",
-    "pkg/grapiserver/internal",
     "pkg/protoc",
-    "pkg/svcgen",
-    "pkg/svcgen/params",
-    "pkg/svcgen/template",
   ]
   pruneopts = ""
   revision = "2518d77403918203a90541bf5edb02cf6f8c607a"
@@ -235,25 +162,6 @@
   packages = ["."]
   pruneopts = ""
   revision = "4f4301a06e153ff90e17793577ab6bf79f8dc5c5"
-
-[[projects]]
-  branch = "master"
-  digest = "1:d9a7385b84d8187fd94e0357045c6fa1147ca94caa56fdd539336c7c102fc728"
-  name = "github.com/jinzhu/inflection"
-  packages = ["."]
-  pruneopts = ""
-  revision = "04140366298a54a039076d798123ffa108fff46c"
-
-[[projects]]
-  digest = "1:e6b65ec5a09e42738d13762852d50a13865d9fccfd29576926e8ef05469388d9"
-  name = "github.com/kisielk/errcheck"
-  packages = [
-    ".",
-    "internal/errcheck",
-  ]
-  pruneopts = ""
-  revision = "e14f8d59a22d460d56c5ee92507cd94c78fbf274"
-  version = "v1.2.0"
 
 [[projects]]
   digest = "1:961dc3b1d11f969370533390fdf203813162980c858e1dabe827b60940c909a5"
@@ -312,38 +220,6 @@
   version = "v0.8.1"
 
 [[projects]]
-  branch = "master"
-  digest = "1:2cca4fc02c8329dadfc6e831e6feb61845983b434fb3e8a034fe5753295a752d"
-  name = "github.com/serenize/snaker"
-  packages = ["."]
-  pruneopts = ""
-  revision = "a683aaf2d516deecd70cad0c72e3ca773ecfcef0"
-
-[[projects]]
-  branch = "master"
-  digest = "1:c756d63fd19d7a0addad30ecb77014fbe82b428c34bdd4142177d0a3d8e77095"
-  name = "github.com/shurcooL/httpfs"
-  packages = ["vfsutil"]
-  pruneopts = ""
-  revision = "74dc9339e414ad069a8d04bba7e7aafd08043a25"
-
-[[projects]]
-  branch = "master"
-  digest = "1:516000eb63bb341737069fafcb705951091b713d2359f84eec58df4347461cd7"
-  name = "github.com/shurcooL/vfsgen"
-  packages = ["."]
-  pruneopts = ""
-  revision = "6a9ea43bcacdf716a5c1b38efff722c07adf0069"
-
-[[projects]]
-  digest = "1:022a4e2a8c327eb46a99088a51c0dda5d5be86928ace2afd72145dc1d746a323"
-  name = "github.com/soheilhy/cmux"
-  packages = ["."]
-  pruneopts = ""
-  revision = "e09e9389d85d8492d313d73d1469c029e710623f"
-  version = "v0.1.4"
-
-[[projects]]
   digest = "1:d9f371ceb44045ca4405b65fed916e4b45396340b9e8674851c3d652f6351cde"
   name = "github.com/spf13/afero"
   packages = [
@@ -393,6 +269,14 @@
   pruneopts = ""
   revision = "6d33b5a963d922d182c91e8a1c88d81fd150cfd4"
   version = "v1.3.1"
+
+[[projects]]
+  digest = "1:a9d024c059d24ac5c6da0be7fac1cfcad1e04474eb29de8dfbfdc2ee2bb3758b"
+  name = "github.com/srvc/fail"
+  packages = ["."]
+  pruneopts = ""
+  revision = "b23d9d32fb81b39e8baaa9517ed882d9abf03927"
+  version = "v3.1.1"
 
 [[projects]]
   digest = "1:59f47ee1fbb31dc3d4df3fdc000fa4e4d001752dacddbba8169c149763e4ef2e"
@@ -547,21 +431,9 @@
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
-    "go/buildutil",
-    "go/callgraph",
-    "go/callgraph/cha",
     "go/gcexportdata",
-    "go/internal/cgo",
     "go/internal/gcimporter",
-    "go/internal/packagesdriver",
-    "go/loader",
-    "go/packages",
-    "go/ssa",
-    "go/ssa/ssautil",
     "go/types/typeutil",
-    "internal/fastwalk",
-    "internal/gopathwalk",
-    "internal/semver",
   ]
   pruneopts = ""
   revision = "3744606dbb67b99c60d3f11cb10bd3f9e6dad472"
@@ -587,6 +459,7 @@
   name = "google.golang.org/genproto"
   packages = [
     "googleapis/api/annotations",
+    "googleapis/pubsub/v1",
     "googleapis/rpc/status",
     "protobuf/field_mask",
   ]
@@ -644,35 +517,6 @@
   version = "v2.2.2"
 
 [[projects]]
-  digest = "1:c88e3258b6ae1a1a7351f4a7e83d67482f35448e4b9a01ea4618865ed5206c50"
-  name = "honnef.co/go/tools"
-  packages = [
-    "arg",
-    "callgraph",
-    "callgraph/static",
-    "cmd/megacheck",
-    "config",
-    "deprecated",
-    "functions",
-    "internal/sharedcheck",
-    "lint",
-    "lint/lintdsl",
-    "lint/lintutil",
-    "lint/lintutil/format",
-    "simple",
-    "ssa",
-    "ssa/ssautil",
-    "ssautil",
-    "staticcheck",
-    "staticcheck/vrp",
-    "unused",
-    "version",
-  ]
-  pruneopts = ""
-  revision = "c2f93a96b099cbbec1de36336ab049ffa620e6d7"
-  version = "2019.1"
-
-[[projects]]
   branch = "master"
   digest = "1:e26d8ef98030c456966c6121bc625f56535d8dcd137554068928ad79e57e79ce"
   name = "k8s.io/utils"
@@ -680,31 +524,19 @@
   pruneopts = ""
   revision = "52ad7309af9f9a1a880bb380e9beaea54b4d05b4"
 
-[[projects]]
-  branch = "master"
-  digest = "1:830e94d6aee334c7b48f1aee47cdfc8b46c8b148af760ef81712085059aa1015"
-  name = "mvdan.cc/unparam"
-  packages = [
-    ".",
-    "check",
-  ]
-  pruneopts = ""
-  revision = "1679b9996abdc6431c2147a133e5223ebb86ea60"
-
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/golang/protobuf/protoc-gen-go",
-    "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway",
-    "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger",
+    "github.com/golang/protobuf/ptypes/empty",
     "github.com/izumin5210/grapi/cmd/grapi",
-    "github.com/izumin5210/grapi/cmd/grapi-gen-command",
-    "github.com/izumin5210/grapi/cmd/grapi-gen-scaffold-service",
-    "github.com/izumin5210/grapi/cmd/grapi-gen-service",
-    "github.com/izumin5210/grapi/cmd/grapi-gen-type",
-    "github.com/izumin5210/grapi/pkg/grapiserver",
+    "github.com/srvc/fail",
+    "google.golang.org/genproto/googleapis/pubsub/v1",
+    "google.golang.org/grpc",
+    "google.golang.org/grpc/codes",
     "google.golang.org/grpc/grpclog",
+    "google.golang.org/grpc/reflection",
+    "google.golang.org/grpc/status",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
