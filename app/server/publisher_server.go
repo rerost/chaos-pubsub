@@ -6,8 +6,6 @@ import (
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/rerost/chaos-pubsub/grpcserver"
 	api_pb "google.golang.org/genproto/googleapis/pubsub/v1"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 // PublisherServiceServer is a composite interface of api_pb.PublisherServiceServer and grapiserver.Server.
@@ -17,34 +15,37 @@ type PublisherServiceServer interface {
 }
 
 // NewPublisherServiceServer creates a new PublisherServiceServer instance.
-func NewPublisherServiceServer() PublisherServiceServer {
-	return &publisherServiceServerImpl{}
+func NewPublisherServiceServer(rawClient api_pb.PublisherClient) PublisherServiceServer {
+	return &publisherServiceServerImpl{
+		rawClient: rawClient,
+	}
 }
 
 type publisherServiceServerImpl struct {
+	rawClient api_pb.PublisherClient
 }
 
-func (*publisherServiceServerImpl) CreateTopic(context.Context, *api_pb.Topic) (*api_pb.Topic, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *publisherServiceServerImpl) CreateTopic(ctx context.Context, topic *api_pb.Topic) (*api_pb.Topic, error) {
+	return server.rawClient.CreateTopic(ctx, topic)
 }
-func (*publisherServiceServerImpl) UpdateTopic(context.Context, *api_pb.UpdateTopicRequest) (*api_pb.Topic, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *publisherServiceServerImpl) UpdateTopic(ctx context.Context, updateTopicRequest *api_pb.UpdateTopicRequest) (*api_pb.Topic, error) {
+	return server.rawClient.UpdateTopic(ctx, updateTopicRequest)
 }
-func (*publisherServiceServerImpl) Publish(context.Context, *api_pb.PublishRequest) (*api_pb.PublishResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *publisherServiceServerImpl) Publish(ctx context.Context, publishRequest *api_pb.PublishRequest) (*api_pb.PublishResponse, error) {
+	return server.rawClient.Publish(ctx, publishRequest)
 }
-func (*publisherServiceServerImpl) GetTopic(context.Context, *api_pb.GetTopicRequest) (*api_pb.Topic, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *publisherServiceServerImpl) GetTopic(ctx context.Context, getTopicRequest *api_pb.GetTopicRequest) (*api_pb.Topic, error) {
+	return server.rawClient.GetTopic(ctx, getTopicRequest)
 }
-func (*publisherServiceServerImpl) ListTopics(context.Context, *api_pb.ListTopicsRequest) (*api_pb.ListTopicsResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *publisherServiceServerImpl) ListTopics(ctx context.Context, listTopicRequest *api_pb.ListTopicsRequest) (*api_pb.ListTopicsResponse, error) {
+	return server.rawClient.ListTopics(ctx, listTopicRequest)
 }
-func (*publisherServiceServerImpl) ListTopicSubscriptions(context.Context, *api_pb.ListTopicSubscriptionsRequest) (*api_pb.ListTopicSubscriptionsResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *publisherServiceServerImpl) ListTopicSubscriptions(ctx context.Context, listTopicSubscritpionsRequest *api_pb.ListTopicSubscriptionsRequest) (*api_pb.ListTopicSubscriptionsResponse, error) {
+	return server.rawClient.ListTopicSubscriptions(ctx, listTopicSubscritpionsRequest)
 }
-func (*publisherServiceServerImpl) ListTopicSnapshots(context.Context, *api_pb.ListTopicSnapshotsRequest) (*api_pb.ListTopicSnapshotsResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *publisherServiceServerImpl) ListTopicSnapshots(ctx context.Context, listTopicSnapshotsRequest *api_pb.ListTopicSnapshotsRequest) (*api_pb.ListTopicSnapshotsResponse, error) {
+	return server.rawClient.ListTopicSnapshots(ctx, listTopicSnapshotsRequest)
 }
-func (*publisherServiceServerImpl) DeleteTopic(context.Context, *api_pb.DeleteTopicRequest) (*empty.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *publisherServiceServerImpl) DeleteTopic(ctx context.Context, deleteTopicRequest *api_pb.DeleteTopicRequest) (*empty.Empty, error) {
+	return server.rawClient.DeleteTopic(ctx, deleteTopicRequest)
 }

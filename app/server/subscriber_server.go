@@ -17,58 +17,61 @@ type SubscriberServiceServer interface {
 }
 
 // NewSubscriberServiceServer creates a new SubscriberServiceServer instance.
-func NewSubscriberServiceServer() SubscriberServiceServer {
-	return &subscriberServiceServerImpl{}
+func NewSubscriberServiceServer(rawClient api_pb.SubscriberClient) SubscriberServiceServer {
+	return &subscriberServiceServerImpl{
+		rawClient: rawClient,
+	}
 }
 
 type subscriberServiceServerImpl struct {
+	rawClient api_pb.SubscriberClient
 }
 
-func (*subscriberServiceServerImpl) CreateSubscription(context.Context, *api_pb.Subscription) (*api_pb.Subscription, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *subscriberServiceServerImpl) CreateSubscription(ctx context.Context, subscription *api_pb.Subscription) (*api_pb.Subscription, error) {
+	return server.rawClient.CreateSubscription(ctx, subscription)
 }
-func (*subscriberServiceServerImpl) GetSubscription(context.Context, *api_pb.GetSubscriptionRequest) (*api_pb.Subscription, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *subscriberServiceServerImpl) GetSubscription(ctx context.Context, getSubscriptionRequest *api_pb.GetSubscriptionRequest) (*api_pb.Subscription, error) {
+	return server.rawClient.GetSubscription(ctx, getSubscriptionRequest)
 }
-func (*subscriberServiceServerImpl) UpdateSubscription(context.Context, *api_pb.UpdateSubscriptionRequest) (*api_pb.Subscription, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *subscriberServiceServerImpl) UpdateSubscription(ctx context.Context, updateSubscriptionRequest *api_pb.UpdateSubscriptionRequest) (*api_pb.Subscription, error) {
+	return server.rawClient.UpdateSubscription(ctx, updateSubscriptionRequest)
 }
-func (*subscriberServiceServerImpl) ListSubscriptions(context.Context, *api_pb.ListSubscriptionsRequest) (*api_pb.ListSubscriptionsResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *subscriberServiceServerImpl) ListSubscriptions(ctx context.Context, listSubscriptionsRequest *api_pb.ListSubscriptionsRequest) (*api_pb.ListSubscriptionsResponse, error) {
+	return server.rawClient.ListSubscriptions(ctx, listSubscriptionsRequest)
 }
-func (*subscriberServiceServerImpl) DeleteSubscription(context.Context, *api_pb.DeleteSubscriptionRequest) (*empty.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *subscriberServiceServerImpl) DeleteSubscription(ctx context.Context, deleteSubscriptionRequest *api_pb.DeleteSubscriptionRequest) (*empty.Empty, error) {
+	return server.rawClient.DeleteSubscription(ctx, deleteSubscriptionRequest)
 }
-func (*subscriberServiceServerImpl) ModifyAckDeadline(context.Context, *api_pb.ModifyAckDeadlineRequest) (*empty.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *subscriberServiceServerImpl) ModifyAckDeadline(ctx context.Context, modifyAckDeadlineRequest *api_pb.ModifyAckDeadlineRequest) (*empty.Empty, error) {
+	return server.rawClient.ModifyAckDeadline(ctx, modifyAckDeadlineRequest)
 }
-func (*subscriberServiceServerImpl) Acknowledge(context.Context, *api_pb.AcknowledgeRequest) (*empty.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *subscriberServiceServerImpl) Acknowledge(ctx context.Context, acknowledgeRequest *api_pb.AcknowledgeRequest) (*empty.Empty, error) {
+	return server.rawClient.Acknowledge(ctx, acknowledgeRequest)
 }
-func (*subscriberServiceServerImpl) Pull(context.Context, *api_pb.PullRequest) (*api_pb.PullResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *subscriberServiceServerImpl) Pull(ctx context.Context, pullRequest *api_pb.PullRequest) (*api_pb.PullResponse, error) {
+	return server.rawClient.Pull(ctx, pullRequest)
 }
-func (*subscriberServiceServerImpl) StreamingPull(api_pb.Subscriber_StreamingPullServer) error {
+func (server *subscriberServiceServerImpl) StreamingPull(subscriberStreamingPullServer api_pb.Subscriber_StreamingPullServer) error {
 	return status.Error(codes.Unimplemented, "TODO: You should implement it!")
 }
-func (*subscriberServiceServerImpl) ModifyPushConfig(context.Context, *api_pb.ModifyPushConfigRequest) (*empty.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *subscriberServiceServerImpl) ModifyPushConfig(ctx context.Context, modifyPushConfigRequest *api_pb.ModifyPushConfigRequest) (*empty.Empty, error) {
+	return server.rawClient.ModifyPushConfig(ctx, modifyPushConfigRequest)
 }
-func (*subscriberServiceServerImpl) GetSnapshot(context.Context, *api_pb.GetSnapshotRequest) (*api_pb.Snapshot, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *subscriberServiceServerImpl) GetSnapshot(ctx context.Context, getSnapshotRequest *api_pb.GetSnapshotRequest) (*api_pb.Snapshot, error) {
+	return server.rawClient.GetSnapshot(ctx, getSnapshotRequest)
 }
-func (*subscriberServiceServerImpl) ListSnapshots(context.Context, *api_pb.ListSnapshotsRequest) (*api_pb.ListSnapshotsResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *subscriberServiceServerImpl) ListSnapshots(ctx context.Context, listSnapshotsRequest *api_pb.ListSnapshotsRequest) (*api_pb.ListSnapshotsResponse, error) {
+	return server.rawClient.ListSnapshots(ctx, listSnapshotsRequest)
 }
-func (*subscriberServiceServerImpl) CreateSnapshot(context.Context, *api_pb.CreateSnapshotRequest) (*api_pb.Snapshot, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *subscriberServiceServerImpl) CreateSnapshot(ctx context.Context, createSnapshotRequest *api_pb.CreateSnapshotRequest) (*api_pb.Snapshot, error) {
+	return server.rawClient.CreateSnapshot(ctx, createSnapshotRequest)
 }
-func (*subscriberServiceServerImpl) UpdateSnapshot(context.Context, *api_pb.UpdateSnapshotRequest) (*api_pb.Snapshot, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *subscriberServiceServerImpl) UpdateSnapshot(ctx context.Context, updateSnapshotRequest *api_pb.UpdateSnapshotRequest) (*api_pb.Snapshot, error) {
+	return server.rawClient.UpdateSnapshot(ctx, updateSnapshotRequest)
 }
-func (*subscriberServiceServerImpl) DeleteSnapshot(context.Context, *api_pb.DeleteSnapshotRequest) (*empty.Empty, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *subscriberServiceServerImpl) DeleteSnapshot(ctx context.Context, deleteSnapshotRequest *api_pb.DeleteSnapshotRequest) (*empty.Empty, error) {
+	return server.rawClient.DeleteSnapshot(ctx, deleteSnapshotRequest)
 }
-func (*subscriberServiceServerImpl) Seek(context.Context, *api_pb.SeekRequest) (*api_pb.SeekResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *subscriberServiceServerImpl) Seek(ctx context.Context, seekRequest *api_pb.SeekRequest) (*api_pb.SeekResponse, error) {
+	return server.rawClient.Seek(ctx, seekRequest)
 }
