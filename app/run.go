@@ -11,6 +11,7 @@ func Run() error {
 		grapiserver.WithDefaultLogger(),
 		grapiserver.WithServers(
 			server.NewPublisherServiceServer(),
+			server.NewSubscriberServiceServer(),
 		),
 	)
 	return s.Serve()
