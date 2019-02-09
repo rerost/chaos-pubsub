@@ -3,19 +3,11 @@
 package server
 
 import (
-	"context"
-
-	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	api_pb "github.com/rerost/chaos-pubsub/api"
+	api_pb "google.golang.org/genproto/googleapis/pubsub/v1"
 	"google.golang.org/grpc"
 )
 
 // RegisterWithServer implements grapiserver.Server.RegisterWithServer.
 func (s *publisherServiceServerImpl) RegisterWithServer(grpcSvr *grpc.Server) {
 	api_pb.RegisterPublisherServer(grpcSvr, s)
-}
-
-// RegisterWithHandler implements grapiserver.Server.RegisterWithHandler.
-func (s *publisherServiceServerImpl) RegisterWithHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return api_pb.RegisterPublisherHandler(ctx, mux, conn)
 }

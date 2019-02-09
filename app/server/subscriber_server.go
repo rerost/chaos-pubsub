@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/golang/protobuf/ptypes/empty"
-	"github.com/izumin5210/grapi/pkg/grapiserver"
-	api_pb "github.com/rerost/chaos-pubsub/api"
+	"github.com/rerost/chaos-pubsub/grpcserver"
+	api_pb "google.golang.org/genproto/googleapis/pubsub/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -13,7 +13,7 @@ import (
 // SubscriberServiceServer is a composite interface of api_pb.SubscriberServiceServer and grapiserver.Server.
 type SubscriberServiceServer interface {
 	api_pb.SubscriberServer
-	grapiserver.Server
+	grpcserver.Server
 }
 
 // NewSubscriberServiceServer creates a new SubscriberServiceServer instance.

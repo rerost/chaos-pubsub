@@ -1,15 +1,14 @@
 package app
 
 import (
-	"github.com/izumin5210/grapi/pkg/grapiserver"
 	"github.com/rerost/chaos-pubsub/app/server"
+	"github.com/rerost/chaos-pubsub/grpcserver"
 )
 
 // Run starts the grapiserver.
 func Run() error {
-	s := grapiserver.New(
-		grapiserver.WithDefaultLogger(),
-		grapiserver.WithServers(
+	s := grpcserver.New(
+		grpcserver.WithServers(
 			server.NewPublisherServiceServer(),
 			server.NewSubscriberServiceServer(),
 		),

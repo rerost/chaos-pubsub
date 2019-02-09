@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/golang/protobuf/ptypes/empty"
-	"github.com/izumin5210/grapi/pkg/grapiserver"
-	api_pb "github.com/rerost/chaos-pubsub/api"
+	"github.com/rerost/chaos-pubsub/grpcserver"
+	api_pb "google.golang.org/genproto/googleapis/pubsub/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -13,7 +13,7 @@ import (
 // PublisherServiceServer is a composite interface of api_pb.PublisherServiceServer and grapiserver.Server.
 type PublisherServiceServer interface {
 	api_pb.PublisherServer
-	grapiserver.Server
+	grpcserver.Server
 }
 
 // NewPublisherServiceServer creates a new PublisherServiceServer instance.
