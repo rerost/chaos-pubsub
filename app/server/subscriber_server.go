@@ -6,8 +6,6 @@ import (
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/rerost/chaos-pubsub/lib/grpcserver"
 	api_pb "google.golang.org/genproto/googleapis/pubsub/v1"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 // SubscriberServiceServer is a composite interface of api_pb.SubscriberServiceServer and grapiserver.Server.
@@ -51,8 +49,57 @@ func (server *subscriberServiceServerImpl) Acknowledge(ctx context.Context, ackn
 func (server *subscriberServiceServerImpl) Pull(ctx context.Context, pullRequest *api_pb.PullRequest) (*api_pb.PullResponse, error) {
 	return server.rawClient.Pull(ctx, pullRequest)
 }
-func (server *subscriberServiceServerImpl) StreamingPull(subscriberStreamingPullServer api_pb.Subscriber_StreamingPullServer) error {
-	return status.Error(codes.Unimplemented, "TODO: You should implement it!")
+func (server *subscriberServiceServerImpl) StreamingPull(stream api_pb.Subscriber_StreamingPullServer) error {
+	streamingPullClient, err := server.rawClient.StreamingPull(stream.Context())
+	if err != nil {
+		return err
+	}
+
+	cctx, cancel := context.WithCancel(stream.Context())
+	defer cancel()
+	errCh := make(chan error)
+	// Client -> Real Cloud Pub/Sub
+	go func(ctx context.Context, errCh chan<- error, streamingPullServer api_pb.Subscriber_StreamingPullServer, streamingPullClient api_pb.Subscriber_StreamingPullClient) {
+		for {
+			select {
+			case <-ctx.Done():
+				break
+			default:
+				received, err := streamingPullServer.Recv()
+				if err != nil {
+					errCh <- err
+					break
+				}
+				if err = streamingPullClient.Send(received); err != nil {
+					errCh <- err
+					break
+				}
+			}
+		}
+	}(cctx, errCh, stream, streamingPullClient)
+
+	// Real Cloud Pub/Sub -> Client
+	go func(ctx context.Context, errCh chan<- error, streamingPullServer api_pb.Subscriber_StreamingPullServer, streamingPullClient api_pb.Subscriber_StreamingPullClient) {
+		for {
+			select {
+			case <-ctx.Done():
+				break
+			default:
+				received, err := streamingPullClient.Recv()
+				if err != nil {
+					errCh <- err
+					break
+				}
+				if err = streamingPullServer.Send(received); err != nil {
+					errCh <- err
+					break
+				}
+			}
+		}
+	}(cctx, errCh, stream, streamingPullClient)
+
+	err = <-errCh
+	return err
 }
 func (server *subscriberServiceServerImpl) ModifyPushConfig(ctx context.Context, modifyPushConfigRequest *api_pb.ModifyPushConfigRequest) (*empty.Empty, error) {
 	return server.rawClient.ModifyPushConfig(ctx, modifyPushConfigRequest)
