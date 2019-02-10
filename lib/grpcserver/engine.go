@@ -7,6 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/grpc-ecosystem/go-grpc-middleware"
 	"github.com/srvc/fail"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -38,7 +39,18 @@ func New(opts ...Option) Engine {
 }
 
 func (engine *engineImp) Serve() error {
-	gserver := grpc.NewServer()
+	gserver := grpc.NewServer(
+		grpc.StreamInterceptor(
+			grpc_middleware.ChainStreamServer(
+				engine.config.StreamServerInterceptors...,
+			),
+		),
+		grpc.UnaryInterceptor(
+			grpc_middleware.ChainUnaryServer(
+				engine.config.UnaryServerInterceptors...,
+			),
+		),
+	)
 
 	for _, server := range engine.config.Servers {
 		server.RegisterWithServer(gserver)

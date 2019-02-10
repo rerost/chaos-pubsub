@@ -3,6 +3,7 @@ package app
 import (
 	"github.com/rerost/chaos-pubsub/app/server"
 	"github.com/rerost/chaos-pubsub/lib/grpcserver"
+	"github.com/rerost/chaos-pubsub/lib/interceptor/logger"
 	"github.com/srvc/fail"
 	api_pb "google.golang.org/genproto/googleapis/pubsub/v1"
 	"google.golang.org/grpc"
@@ -23,6 +24,12 @@ func Run() error {
 		grpcserver.WithServers(
 			server.NewPublisherServiceServer(publisherClient),
 			server.NewSubscriberServiceServer(subscriberClient),
+		),
+		grpcserver.WithGrpcServerUnaryInterceptors(
+			logger.UnaryServerInterceptor(),
+		),
+		grpcserver.WithGrpcServerStreamInterceptors(
+			logger.StreamServerInterceptor(),
 		),
 	)
 	return fail.Wrap(s.Serve())
