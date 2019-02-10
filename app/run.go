@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/rerost/chaos-pubsub/app/server"
-	"github.com/rerost/chaos-pubsub/grpcserver"
+	"github.com/rerost/chaos-pubsub/lib/grpcserver"
 	"github.com/srvc/fail"
 	api_pb "google.golang.org/genproto/googleapis/pubsub/v1"
 	"google.golang.org/grpc"
