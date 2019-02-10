@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"io"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/rerost/chaos-pubsub/lib/grpcserver"
@@ -57,7 +58,8 @@ func (server *subscriberServiceServerImpl) StreamingPull(stream api_pb.Subscribe
 
 	cctx, cancel := context.WithCancel(stream.Context())
 	defer cancel()
-	errCh := make(chan error)
+	errCh1 := make(chan error)
+	errCh2 := make(chan error)
 	// Client -> Real Cloud Pub/Sub
 	go func(ctx context.Context, errCh chan<- error, streamingPullServer api_pb.Subscriber_StreamingPullServer, streamingPullClient api_pb.Subscriber_StreamingPullClient) {
 		for {
@@ -76,7 +78,7 @@ func (server *subscriberServiceServerImpl) StreamingPull(stream api_pb.Subscribe
 				}
 			}
 		}
-	}(cctx, errCh, stream, streamingPullClient)
+	}(cctx, errCh1, stream, streamingPullClient)
 
 	// Real Cloud Pub/Sub -> Client
 	go func(ctx context.Context, errCh chan<- error, streamingPullServer api_pb.Subscriber_StreamingPullServer, streamingPullClient api_pb.Subscriber_StreamingPullClient) {
@@ -96,10 +98,18 @@ func (server *subscriberServiceServerImpl) StreamingPull(stream api_pb.Subscribe
 				}
 			}
 		}
-	}(cctx, errCh, stream, streamingPullClient)
+	}(cctx, errCh2, stream, streamingPullClient)
 
-	err = <-errCh
-	return err
+	select {
+	case err := <-errCh1:
+		if err == io.EOF {
+			return streamingPullClient.CloseSend()
+		} else {
+			return err
+		}
+	case err := <-errCh2:
+		return err
+	}
 }
 func (server *subscriberServiceServerImpl) ModifyPushConfig(ctx context.Context, modifyPushConfigRequest *api_pb.ModifyPushConfigRequest) (*empty.Empty, error) {
 	return server.rawClient.ModifyPushConfig(ctx, modifyPushConfigRequest)
