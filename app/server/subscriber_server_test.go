@@ -51,24 +51,24 @@ func TestPubsubSubscribe(t *testing.T) {
 }
 
 func TestPubsubSubscriberWithRealClient(t *testing.T) {
-	ctx := context.Background()
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
 	port := "5000"
-	go func(t *testing.T) {
-		if err := startRealServer(":" + port); err != nil {
-			t.Error(t)
+	go func(ctx context.Context, t *testing.T) {
+		if err := startRealServer(ctx, ":"+port); err != nil {
+			t.Error(err)
 		}
-	}(t)
+	}(ctx, t)
 
 	conn, err := grpc.Dial("localhost:"+port, grpc.WithInsecure())
 	if err != nil {
 		t.Error(err)
-		t.Fail()
 	}
 
 	pubsubClient, err := pubsub.NewClient(ctx, "test1", option.WithGRPCConn(conn))
 	if err != nil {
 		t.Error(t)
-		t.Fail()
 	}
 
 	topicName := "test-topic"
@@ -77,7 +77,6 @@ func TestPubsubSubscriberWithRealClient(t *testing.T) {
 	topic, err := pubsubClient.CreateTopic(ctx, topicName)
 	if err != nil {
 		t.Error(err)
-		t.Fail()
 	}
 
 	sub, err := pubsubClient.CreateSubscription(ctx, subscriptionName, pubsub.SubscriptionConfig{Topic: topic})
@@ -87,7 +86,7 @@ func TestPubsubSubscriberWithRealClient(t *testing.T) {
 
 	{
 		topic.Publish(ctx, &pubsub.Message{Data: []byte("test message")})
-		cctx, _ := context.WithTimeout(ctx, time.Second*5)
+		cctx, _ := context.WithTimeout(ctx, time.Second*10)
 		err := sub.Receive(cctx, func(ctx context.Context, message *pubsub.Message) {
 			message.Ack()
 			if diff := cmp.Diff(message.Data, []byte("test message")); diff != "" {
@@ -101,7 +100,7 @@ func TestPubsubSubscriberWithRealClient(t *testing.T) {
 	}
 }
 
-func startRealServer(port string) error {
+func startRealServer(ctx context.Context, port string) error {
 	srvr := pstest.NewServer()
 	conn, err := grpc.Dial(srvr.Addr, grpc.WithInsecure())
 	if err != nil {
@@ -132,9 +131,14 @@ func startRealServer(port string) error {
 		}
 	}()
 
-	err = <-errCh
-	if err != nil {
-		return err
+	select {
+	case <-ctx.Done():
+		gserver.Stop()
+		return nil
+	case err := <-errCh:
+		if err != nil {
+			return fail.Wrap(err)
+		}
 	}
 	return nil
 }
