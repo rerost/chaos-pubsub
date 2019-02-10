@@ -94,14 +94,18 @@ func (server *subscriberServiceServerImpl) StreamingPull(stream api_pb.Subscribe
 					errCh <- err
 					break
 				}
+
+				time.Sleep(time.Duration(rand.Intn(10)) * time.Millisecond)
+				err = streamingPullServer.Send(received)
+				if err != nil {
+					errCh <- err
+				}
+
 				for i := 0; i < rand.Intn(10)+1; i++ {
-					go func(ctx context.Context, errCh chan<- error) {
+					go func(ctx context.Context) {
 						time.Sleep(time.Duration(rand.Intn(10)) * time.Millisecond)
-						err = streamingPullServer.Send(received)
-						if err != nil {
-							errCh <- err
-						}
-					}(ctx, errCh)
+						streamingPullServer.Send(received)
+					}(ctx)
 				}
 			}
 		}

@@ -36,7 +36,7 @@ func (server *publisherServiceServerImpl) UpdateTopic(ctx context.Context, updat
 func (server *publisherServiceServerImpl) Publish(ctx context.Context, publishRequest *api_pb.PublishRequest) (*api_pb.PublishResponse, error) {
 	res, err := server.rawClient.Publish(ctx, publishRequest)
 	var wg sync.WaitGroup
-	n := rand.Intn(10) + 1
+	n := rand.Intn(10)
 	wg.Add(n)
 	for i := 0; i < n; i++ {
 		go func(server *publisherServiceServerImpl) {
