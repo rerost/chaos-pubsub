@@ -1,11 +1,13 @@
 package app
 
 import (
+	"context"
+
 	"github.com/rerost/chaos-pubsub/app/server"
+	"github.com/rerost/chaos-pubsub/infra/pubsub"
 	"github.com/rerost/chaos-pubsub/lib/grpcserver"
 	"github.com/rerost/chaos-pubsub/lib/interceptor/logger"
 	"github.com/srvc/fail"
-	api_pb "google.golang.org/genproto/googleapis/pubsub/v1"
 	"google.golang.org/grpc"
 )
 
@@ -17,13 +19,16 @@ func Run() error {
 	}
 	defer conn.Close()
 
-	publisherClient := api_pb.NewPublisherClient(conn)
-	subscriberClient := api_pb.NewSubscriberClient(conn)
+	ctx := context.Background()
+	client, err := pubsub.NewClient(ctx, "test", []byte{})
+	if err != nil {
+		return fail.Wrap(err)
+	}
 
 	s := grpcserver.New(
 		grpcserver.WithServers(
-			server.NewPublisherServiceServer(publisherClient),
-			server.NewSubscriberServiceServer(subscriberClient),
+			server.NewPublisherServiceServer(client.PublisherClient),
+			server.NewSubscriberServiceServer(client.SubscriberClient),
 		),
 		grpcserver.WithGrpcServerUnaryInterceptors(
 			logger.UnaryServerInterceptor(),
