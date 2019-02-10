@@ -13,6 +13,13 @@ jobs:
       - run: docker build -t rerost/chaos-pubsub:`git rev-parse HEAD` .
       - run: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
       - run: docker push rerost/chaos-pubsub:`git rev-parse HEAD`
+  test:
+    docker:
+      - image: circleci/golang:1.11.3
+    working_directory: /go/src/github.com/rerost/chaos-pubsub
+    steps:
+      - checkout
+      - run: make test
   release:
     docker:
       - image: circleci/golang:1.11.3
@@ -20,17 +27,19 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-      - run: docker build -t rerost/chaos-pubsub:latest .
-      - run: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+      - run: docker tag rerost/chaos-pubsub:`git rev-parse HEAD` rerost/chaos-pubsub:latest
       - run: docker push rerost/chaos-pubsub:latest
 
 workflows:
   version: 2
   build_and_test:
     jobs:
+      - test
       - build:
           context: docker push
       - release:
+          requires:
+            - build
           context: docker push
           filters:
             branches:
