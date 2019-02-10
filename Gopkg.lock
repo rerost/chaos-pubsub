@@ -2,6 +2,24 @@
 
 
 [[projects]]
+  digest = "1:25e90949d88e66bcbb646626a293c77a97237b37a8f854c1e8ae817b74b5c2cf"
+  name = "cloud.google.com/go"
+  packages = [
+    "compute/metadata",
+    "iam",
+    "internal/optional",
+    "internal/testutil",
+    "internal/version",
+    "pubsub",
+    "pubsub/apiv1",
+    "pubsub/internal/distribution",
+    "pubsub/pstest",
+  ]
+  pruneopts = ""
+  revision = "c9474f2f8deb81759839474b6bd1726bbfe1c1c4"
+  version = "v0.36.0"
+
+[[projects]]
   digest = "1:e988ed0ca0d81f4d28772760c02ee95084961311291bdfefc1b04617c178b722"
   name = "github.com/fatih/color"
   packages = ["."]
@@ -34,6 +52,19 @@
   version = "v1.2.0"
 
 [[projects]]
+  digest = "1:f9f45f75f332e03fc7e9fe9188ea4e1ce4d14779ef34fa1b023da67518e36327"
+  name = "github.com/google/go-cmp"
+  packages = [
+    "cmp",
+    "cmp/internal/diff",
+    "cmp/internal/function",
+    "cmp/internal/value",
+  ]
+  pruneopts = ""
+  revision = "3af367b6b30c263d47e8895973edcca9a49cf029"
+  version = "v0.2.0"
+
+[[projects]]
   digest = "1:c128ac3e9221e1b2f829b3c8718f8b1c484908c5fcbacf3905e7bba3e15fc99c"
   name = "github.com/google/go-github"
   packages = ["github"]
@@ -56,6 +87,14 @@
   pruneopts = ""
   revision = "9a7ae3ba6b734d831e88c75966fd5e9c0abdeace"
   version = "v0.2.1"
+
+[[projects]]
+  digest = "1:55c1b46a80db2baf4d762c1d0b5cb4946e46125baa02b8959310abab15b54aee"
+  name = "github.com/googleapis/gax-go"
+  packages = ["v2"]
+  pruneopts = ""
+  revision = "c8a15bac9b9fe955bd9f900272f9a306465d28cf"
+  version = "v2.0.3"
 
 [[projects]]
   digest = "1:9a0b2dd1f882668a3d7fbcd424eed269c383a16f1faa3a03d14e0dd5fba571b1"
@@ -120,6 +159,14 @@
   version = "v1.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:ee983cf355a0655319c4828b7fd0f9f8a95cfe9def11c147a27dceb875ed16bb"
+  name = "github.com/izumin5210/cgt"
+  packages = ["."]
+  pruneopts = ""
+  revision = "ac2ef913eb51b3c56d185c7462939e64c4997970"
+
+[[projects]]
   digest = "1:5a9f584f3d7355e0aa3c5fc93275f7da29a4c52cbac5baa3ed6a2fc164f223f7"
   name = "github.com/izumin5210/clig"
   packages = ["pkg/clib"]
@@ -170,6 +217,14 @@
   packages = ["."]
   pruneopts = ""
   revision = "4f4301a06e153ff90e17793577ab6bf79f8dc5c5"
+
+[[projects]]
+  branch = "master"
+  digest = "1:095e6cc12b2b7063e6f30d6f8d3b2440f9a0c9a4e552b3d2facf601e73ff439f"
+  name = "github.com/logrusorgru/aurora"
+  packages = ["."]
+  pruneopts = ""
+  revision = "a7b3b318ed4e1ae5b80602b08627267303c68572"
 
 [[projects]]
   digest = "1:961dc3b1d11f969370533390fdf203813162980c858e1dabe827b60940c909a5"
@@ -314,6 +369,30 @@
   version = "v0.14.0"
 
 [[projects]]
+  digest = "1:b1bb9332f6cb7821a730e1681819b2813340eba5e873f05381815a7c6807d172"
+  name = "go.opencensus.io"
+  packages = [
+    ".",
+    "exemplar",
+    "internal",
+    "internal/tagencoding",
+    "plugin/ocgrpc",
+    "plugin/ochttp",
+    "plugin/ochttp/propagation/b3",
+    "stats",
+    "stats/internal",
+    "stats/view",
+    "tag",
+    "trace",
+    "trace/internal",
+    "trace/propagation",
+    "trace/tracestate",
+  ]
+  pruneopts = ""
+  revision = "2b5032d79456124f42db6b7eb19ac6c155449dc2"
+  version = "v0.19.0"
+
+[[projects]]
   digest = "1:74f86c458e82e1c4efbab95233e0cf51b7cc02dc03193be9f62cd81224e10401"
   name = "go.uber.org/atomic"
   packages = ["."]
@@ -386,7 +465,10 @@
   name = "golang.org/x/oauth2"
   packages = [
     ".",
+    "google",
     "internal",
+    "jws",
+    "jwt",
   ]
   pruneopts = ""
   revision = "99b60b757ec124ebb7d6b7e97f153b19c10ce163"
@@ -395,7 +477,10 @@
   branch = "master"
   digest = "1:814474ab808c5e04b9334d046f8a0060fc1724c2c02acfd00a7cc0008d675455"
   name = "golang.org/x/sync"
-  packages = ["errgroup"]
+  packages = [
+    "errgroup",
+    "semaphore",
+  ]
   pruneopts = ""
   revision = "37e7f081c4d4c64e13b10787722085407fe5d15f"
 
@@ -447,15 +532,38 @@
   revision = "3744606dbb67b99c60d3f11cb10bd3f9e6dad472"
 
 [[projects]]
+  digest = "1:1ef3746d0b0a2ab4147e9fe251202756ff89d181c3c3cc67abdf40e375243cbc"
+  name = "google.golang.org/api"
+  packages = [
+    "googleapi/transport",
+    "internal",
+    "iterator",
+    "option",
+    "support/bundler",
+    "transport",
+    "transport/grpc",
+    "transport/http",
+    "transport/http/internal/propagation",
+  ]
+  pruneopts = ""
+  revision = "19e022d8cf43ce81f046bae8cc18c5397cc7732f"
+  version = "v0.1.0"
+
+[[projects]]
   digest = "1:bc09e719c4e2a15d17163f5272d9a3131c45d77542b7fdc53ff518815bc19ab3"
   name = "google.golang.org/appengine"
   packages = [
+    ".",
     "internal",
+    "internal/app_identity",
     "internal/base",
     "internal/datastore",
     "internal/log",
+    "internal/modules",
     "internal/remote_api",
+    "internal/socket",
     "internal/urlfetch",
+    "socket",
     "urlfetch",
   ]
   pruneopts = ""
@@ -467,6 +575,7 @@
   name = "google.golang.org/genproto"
   packages = [
     "googleapis/api/annotations",
+    "googleapis/iam/v1",
     "googleapis/pubsub/v1",
     "googleapis/rpc/status",
     "protobuf/field_mask",
@@ -487,6 +596,7 @@
     "connectivity",
     "credentials",
     "credentials/internal",
+    "credentials/oauth",
     "encoding",
     "encoding/proto",
     "grpclog",
@@ -536,11 +646,17 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "cloud.google.com/go/pubsub",
+    "cloud.google.com/go/pubsub/pstest",
     "github.com/golang/protobuf/ptypes/empty",
+    "github.com/google/go-cmp/cmp",
     "github.com/grpc-ecosystem/go-grpc-middleware",
+    "github.com/izumin5210/cgt",
     "github.com/izumin5210/grapi/cmd/grapi",
     "github.com/srvc/fail",
+    "google.golang.org/api/option",
     "google.golang.org/genproto/googleapis/pubsub/v1",
+    "google.golang.org/genproto/protobuf/field_mask",
     "google.golang.org/grpc",
     "google.golang.org/grpc/codes",
     "google.golang.org/grpc/grpclog",

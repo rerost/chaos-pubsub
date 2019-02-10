@@ -6,5 +6,6 @@ package tools
 
 // tool dependencies
 import (
+	_ "github.com/izumin5210/cgt"
 	_ "github.com/izumin5210/grapi/cmd/grapi"
 )
