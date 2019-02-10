@@ -4,8 +4,7 @@ FROM rerost/chaos-pubsub:latest
 ENV GOPATH /go
 
 ENV APP_ROOT $GOPATH/src/github.com/rerost/chaos-pubsub
-RUN ln -s $APP_ROOT/ /app
-WORKDIR /app
+WORKDIR /${APP_ROOT}
 
 # Install Dependency
 COPY Makefile ${APP_ROOT}
@@ -17,5 +16,7 @@ RUN make vendor
 # Build Binary
 COPY . ${APP_ROOT}/
 RUN gex grapi build
+
+RUN ln -sf $APP_ROOT/ /app
 
 CMD ["/app/bin/server"]
