@@ -1,4 +1,5 @@
-FROM golang:1.11
+# FROM golang:1.11
+FROM rerost/chaos-pubsub:latest
 
 ENV GOPATH /go
 
