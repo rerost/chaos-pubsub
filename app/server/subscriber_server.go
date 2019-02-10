@@ -3,6 +3,8 @@ package server
 import (
 	"context"
 	"io"
+	"math/rand"
+	"time"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/rerost/chaos-pubsub/lib/grpcserver"
@@ -92,9 +94,14 @@ func (server *subscriberServiceServerImpl) StreamingPull(stream api_pb.Subscribe
 					errCh <- err
 					break
 				}
-				if err = streamingPullServer.Send(received); err != nil {
-					errCh <- err
-					break
+				for i := 0; i < rand.Intn(10)+1; i++ {
+					go func(ctx context.Context, errCh chan<- error) {
+						time.Sleep(time.Duration(rand.Intn(10)) * time.Millisecond)
+						err = streamingPullServer.Send(received)
+						if err != nil {
+							errCh <- err
+						}
+					}(ctx, errCh)
 				}
 			}
 		}
