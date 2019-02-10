@@ -9,7 +9,7 @@ vendor:
 
 PHONY: test
 test: vendor
-	gotestcover -race -coverprofile=coverage.txt -v ./...  | gex cgt
+	gotestcover -race -coverprofile=coverage.txt -v ./... 
 
 PHONY: coverage
 coverage: test
