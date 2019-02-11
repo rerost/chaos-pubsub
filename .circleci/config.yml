@@ -27,6 +27,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - run: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
       - run: docker pull rerost/chaos-pubsub:`git rev-parse HEAD`
       - run: docker tag rerost/chaos-pubsub:`git rev-parse HEAD` rerost/chaos-pubsub:latest
       - run: docker push rerost/chaos-pubsub:latest
