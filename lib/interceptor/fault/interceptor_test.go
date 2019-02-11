@@ -3,7 +3,6 @@ package fault_test
 import (
 	"context"
 	"net"
-	"sync"
 	"testing"
 	"time"
 
@@ -36,11 +35,8 @@ func TestDuplicateSendPublish(t *testing.T) {
 	}
 }
 
-func createServer(serverOption ...grpc.ServerOption) (*grpc.Server, error) {
+func createServer(pubsubServer *pstest.Server, serverOption ...grpc.ServerOption) (*grpc.Server, error) {
 	// Prepare Server
-	pubsubServer := pstest.NewServer()
-	defer pubsubServer.Close()
-
 	conn, err := grpc.Dial(pubsubServer.Addr, grpc.WithInsecure())
 	if err != nil {
 		return nil, err
@@ -80,7 +76,10 @@ func preparePubSub(ctx context.Context, client *pubsub.Client) (*pubsub.Topic, *
 
 func TestDuplicateSendPublishWithRealPubsub(t *testing.T) {
 	t.Parallel()
-	srv, err := createServer(grpc.UnaryInterceptor(fault.UnaryServerInterceptor()))
+	pubsubServer := pstest.NewServer()
+	defer pubsubServer.Close()
+
+	srv, err := createServer(pubsubServer, grpc.UnaryInterceptor(fault.UnaryServerInterceptor()))
 	if err != nil {
 		t.Error(err)
 	}
@@ -106,28 +105,41 @@ func TestDuplicateSendPublishWithRealPubsub(t *testing.T) {
 	}
 
 	topic.Publish(ctx, &pubsub.Message{Data: []byte("test message")})
-	cctx, cancel := context.WithTimeout(ctx, time.Second*2)
-	defer cancel()
+
+	countCh := make(chan int, 2)
+	go func(ctx context.Context, countCh chan<- int) {
+		cctx, cancel := context.WithTimeout(ctx, time.Second*2)
+		defer cancel()
+
+		subscription.Receive(cctx, func(ctx context.Context, m *pubsub.Message) {
+			m.Ack()
+
+			countCh <- 1
+		})
+
+		close(countCh)
+	}(ctx, countCh)
 
 	count := 0
-	var mutex sync.Mutex
-	subscription.Receive(cctx, func(ctx context.Context, m *pubsub.Message) {
-		m.Ack()
-
-		mutex.Lock()
-		count++
-		mutex.Unlock()
-	})
-
-	if diff := cmp.Diff(count, 2); diff != "" {
-		t.Error(diff)
+	for {
+		_, ok := <-countCh
+		if !ok {
+			if diff := cmp.Diff(count, 2); diff != "" {
+				t.Error(diff)
+			}
+			return
+		} else {
+			count++
+		}
 	}
 }
 
 func TestDuplicateSendSubscriptionWithRealPubsub(t *testing.T) {
 	t.Parallel()
+	pubsubServer := pstest.NewServer()
+	defer pubsubServer.Close()
 
-	srv, err := createServer(grpc.StreamInterceptor(fault.StreamServerInterceptor()))
+	srv, err := createServer(pubsubServer, grpc.StreamInterceptor(fault.StreamServerInterceptor()))
 	if err != nil {
 		t.Error(err)
 	}
@@ -153,20 +165,30 @@ func TestDuplicateSendSubscriptionWithRealPubsub(t *testing.T) {
 	}
 
 	topic.Publish(ctx, &pubsub.Message{Data: []byte("test message")})
-	cctx, cancel := context.WithTimeout(ctx, time.Second*2)
-	defer cancel()
+	countCh := make(chan int, 2)
+	go func(ctx context.Context, countCh chan<- int) {
+		cctx, cancel := context.WithTimeout(ctx, time.Second*2)
+		defer cancel()
+
+		subscription.Receive(cctx, func(ctx context.Context, m *pubsub.Message) {
+			m.Ack()
+
+			countCh <- 1
+		})
+
+		close(countCh)
+	}(ctx, countCh)
 
 	count := 0
-	var mutex sync.Mutex
-	subscription.Receive(cctx, func(ctx context.Context, m *pubsub.Message) {
-		m.Ack()
-
-		mutex.Lock()
-		count++
-		mutex.Unlock()
-	})
-
-	if diff := cmp.Diff(count, 2); diff != "" {
-		t.Error(diff)
+	for {
+		_, ok := <-countCh
+		if !ok {
+			if diff := cmp.Diff(count, 2); diff != "" {
+				t.Error(diff)
+			}
+			return
+		} else {
+			count++
+		}
 	}
 }
