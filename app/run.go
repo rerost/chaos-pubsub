@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"os"
+	"strconv"
 
 	"github.com/rerost/chaos-pubsub/app/server"
 	"github.com/rerost/chaos-pubsub/infra/pubsub"
@@ -15,6 +16,15 @@ import (
 // Run starts the grapiserver.
 func Run() error {
 	ctx := context.Background()
+	port := int64(5000)
+	if _port := os.Getenv("APP_PORT"); _port != "" {
+		p, err := strconv.ParseInt(_port, 10, 64)
+		if err != nil {
+			return err
+		}
+		port = p
+	}
+
 	projectName := os.Getenv("GOOGLE_CLOUD_PROJECT")
 	if projectName == "" {
 		fail.New("Please set env GOOGLE_CLOUD_PROJECT")
@@ -37,6 +47,7 @@ func Run() error {
 			logger.StreamServerInterceptor(),
 			fault.StreamServerInterceptor(),
 		),
+		grpcserver.WithPort(port),
 	)
 	return fail.Wrap(s.Serve())
 }
