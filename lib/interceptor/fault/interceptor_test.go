@@ -19,6 +19,7 @@ import (
 
 func TestDuplicateSendPublish(t *testing.T) {
 	t.Parallel()
+
 	ctx := context.Background()
 	info := &grpc.UnaryServerInfo{FullMethod: "/google.pubsub.v1.Publisher/Publish"}
 
@@ -76,6 +77,7 @@ func preparePubSub(ctx context.Context, client *pubsub.Client) (*pubsub.Topic, *
 
 func TestDuplicateSendPublishWithRealPubsub(t *testing.T) {
 	t.Parallel()
+
 	pubsubServer := pstest.NewServer()
 	defer pubsubServer.Close()
 
