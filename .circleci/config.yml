@@ -20,6 +20,7 @@ jobs:
     steps:
       - checkout
       - run: make test
+      - run: bash <(curl -s https://codecov.io/bash)
   release:
     docker:
       - image: circleci/golang:1.11.3
@@ -36,7 +37,8 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - test
+      - test:
+          context: codecov-chaos-pubsub
       - build:
           context: docker push
       - release:
