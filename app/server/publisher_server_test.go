@@ -13,6 +13,8 @@ import (
 )
 
 func TestPubsubPublish(t *testing.T) {
+	t.Parallel()
+
 	ctx := context.Background()
 	srvr := pstest.NewServer()
 

@@ -14,9 +14,12 @@ import (
 	"google.golang.org/api/option"
 	api_pb "google.golang.org/genproto/googleapis/pubsub/v1"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/test/bufconn"
 )
 
 func TestPubsubSubscribe(t *testing.T) {
+	t.Parallel()
+
 	ctx := context.Background()
 	srvr := pstest.NewServer()
 
@@ -51,17 +54,19 @@ func TestPubsubSubscribe(t *testing.T) {
 }
 
 func TestPubsubSubscriberWithRealClient(t *testing.T) {
+	t.Parallel()
+
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	port := "5000"
+	lis := bufconn.Listen(1024 * 1024)
 	go func(ctx context.Context, t *testing.T) {
-		if err := startRealServer(ctx, ":"+port); err != nil {
+		if err := startRealServer(ctx, lis); err != nil {
 			t.Error(err)
 		}
 	}(ctx, t)
 
-	conn, err := grpc.Dial("localhost:"+port, grpc.WithInsecure())
+	conn, err := grpc.DialContext(ctx, "bufnet", grpc.WithDialer(func(string, time.Duration) (net.Conn, error) { return lis.Dial() }), grpc.WithInsecure())
 	if err != nil {
 		t.Error(err)
 	}
@@ -100,7 +105,7 @@ func TestPubsubSubscriberWithRealClient(t *testing.T) {
 	}
 }
 
-func startRealServer(ctx context.Context, port string) error {
+func startRealServer(ctx context.Context, lis *bufconn.Listener) error {
 	srvr := pstest.NewServer()
 	conn, err := grpc.Dial(srvr.Addr, grpc.WithInsecure())
 	if err != nil {
@@ -114,18 +119,13 @@ func startRealServer(ctx context.Context, port string) error {
 	publishServer := server.NewPublisherServiceServer(publisherClient)
 	subscribeServer := server.NewSubscriberServiceServer(subscriberClient)
 
-	network, err := net.Listen("tcp", port)
-	if err != nil {
-		return err
-	}
-
 	gserver := grpc.NewServer()
 	publishServer.RegisterWithServer(gserver)
 	subscribeServer.RegisterWithServer(gserver)
 
 	errCh := make(chan error)
 	go func() {
-		err := gserver.Serve(network)
+		err := gserver.Serve(lis)
 		if err != nil {
 			errCh <- fail.Wrap(err)
 		}

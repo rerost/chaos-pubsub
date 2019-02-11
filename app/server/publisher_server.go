@@ -2,8 +2,6 @@ package server
 
 import (
 	"context"
-	"math/rand"
-	"sync"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/rerost/chaos-pubsub/lib/grpcserver"
@@ -34,19 +32,7 @@ func (server *publisherServiceServerImpl) UpdateTopic(ctx context.Context, updat
 	return server.rawClient.UpdateTopic(ctx, updateTopicRequest)
 }
 func (server *publisherServiceServerImpl) Publish(ctx context.Context, publishRequest *api_pb.PublishRequest) (*api_pb.PublishResponse, error) {
-	res, err := server.rawClient.Publish(ctx, publishRequest)
-	var wg sync.WaitGroup
-	n := rand.Intn(10)
-	wg.Add(n)
-	for i := 0; i < n; i++ {
-		go func(server *publisherServiceServerImpl) {
-			server.rawClient.Publish(ctx, publishRequest)
-			wg.Done()
-		}(server)
-	}
-
-	wg.Wait()
-	return res, err
+	return server.rawClient.Publish(ctx, publishRequest)
 }
 func (server *publisherServiceServerImpl) GetTopic(ctx context.Context, getTopicRequest *api_pb.GetTopicRequest) (*api_pb.Topic, error) {
 	return server.rawClient.GetTopic(ctx, getTopicRequest)
