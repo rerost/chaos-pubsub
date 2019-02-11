@@ -7,7 +7,6 @@ import (
 
 	"cloud.google.com/go/pubsub"
 	"github.com/srvc/fail"
-	"google.golang.org/api/option"
 	api_pb "google.golang.org/genproto/googleapis/pubsub/v1"
 	"google.golang.org/grpc"
 )
@@ -17,14 +16,10 @@ type Client struct {
 	SubscriberClient api_pb.SubscriberClient
 }
 
-func NewClient(ctx context.Context, project string, keyfile []byte) (Client, error) {
+func NewClient(ctx context.Context, project string) (Client, error) {
 	var pubsubClient *pubsub.Client
 	var err error
-	if len(keyfile) == 0 {
-		pubsubClient, err = pubsub.NewClient(ctx, project)
-	} else {
-		pubsubClient, err = pubsub.NewClient(ctx, project, option.WithCredentialsJSON(keyfile))
-	}
+	pubsubClient, err = pubsub.NewClient(ctx, project)
 
 	if err != nil {
 		return Client{}, fail.Wrap(err)

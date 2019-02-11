@@ -2,25 +2,23 @@ package app
 
 import (
 	"context"
+	"os"
 
 	"github.com/rerost/chaos-pubsub/app/server"
 	"github.com/rerost/chaos-pubsub/infra/pubsub"
 	"github.com/rerost/chaos-pubsub/lib/grpcserver"
 	"github.com/rerost/chaos-pubsub/lib/interceptor/logger"
 	"github.com/srvc/fail"
-	"google.golang.org/grpc"
 )
 
 // Run starts the grapiserver.
 func Run() error {
-	conn, err := grpc.Dial("localhost:8085", grpc.WithInsecure())
-	if err != nil {
-		return fail.Wrap(err)
-	}
-	defer conn.Close()
-
 	ctx := context.Background()
-	client, err := pubsub.NewClient(ctx, "test", []byte{})
+	projectName := os.Getenv("GOOGLE_CLOUD_PROJECT")
+	if projectName == "" {
+		fail.New("Please set env GOOGLE_CLOUD_PROJECT")
+	}
+	client, err := pubsub.NewClient(ctx, projectName)
 	if err != nil {
 		return fail.Wrap(err)
 	}
