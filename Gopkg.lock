@@ -20,6 +20,14 @@
   version = "v0.36.0"
 
 [[projects]]
+  digest = "1:e4b30804a381d7603b8a344009987c1ba351c26043501b23b8c7ce21f0b67474"
+  name = "github.com/BurntSushi/toml"
+  packages = ["."]
+  pruneopts = ""
+  revision = "3012a1dbe2e4bd1391d42b32f0577cb7bbc7f005"
+  version = "v0.3.1"
+
+[[projects]]
   digest = "1:e988ed0ca0d81f4d28772760c02ee95084961311291bdfefc1b04617c178b722"
   name = "github.com/fatih/color"
   packages = ["."]
@@ -217,6 +225,17 @@
   packages = ["."]
   pruneopts = ""
   revision = "4f4301a06e153ff90e17793577ab6bf79f8dc5c5"
+
+[[projects]]
+  digest = "1:e6b65ec5a09e42738d13762852d50a13865d9fccfd29576926e8ef05469388d9"
+  name = "github.com/kisielk/errcheck"
+  packages = [
+    ".",
+    "internal/errcheck",
+  ]
+  pruneopts = ""
+  revision = "e14f8d59a22d460d56c5ee92507cd94c78fbf274"
+  version = "v1.2.0"
 
 [[projects]]
   branch = "master"
@@ -524,9 +543,19 @@
   name = "golang.org/x/tools"
   packages = [
     "go/ast/astutil",
+    "go/buildutil",
     "go/gcexportdata",
+    "go/internal/cgo",
     "go/internal/gcimporter",
+    "go/internal/packagesdriver",
+    "go/loader",
+    "go/packages",
+    "go/ssa",
+    "go/ssa/ssautil",
     "go/types/typeutil",
+    "internal/fastwalk",
+    "internal/gopathwalk",
+    "internal/semver",
   ]
   pruneopts = ""
   revision = "3744606dbb67b99c60d3f11cb10bd3f9e6dad472"
@@ -635,12 +664,52 @@
   version = "v2.2.2"
 
 [[projects]]
+  digest = "1:c88e3258b6ae1a1a7351f4a7e83d67482f35448e4b9a01ea4618865ed5206c50"
+  name = "honnef.co/go/tools"
+  packages = [
+    "arg",
+    "callgraph",
+    "callgraph/static",
+    "cmd/megacheck",
+    "config",
+    "deprecated",
+    "functions",
+    "internal/sharedcheck",
+    "lint",
+    "lint/lintdsl",
+    "lint/lintutil",
+    "lint/lintutil/format",
+    "simple",
+    "ssa",
+    "ssa/ssautil",
+    "ssautil",
+    "staticcheck",
+    "staticcheck/vrp",
+    "unused",
+    "version",
+  ]
+  pruneopts = ""
+  revision = "c2f93a96b099cbbec1de36336ab049ffa620e6d7"
+  version = "2019.1"
+
+[[projects]]
   branch = "master"
   digest = "1:e26d8ef98030c456966c6121bc625f56535d8dcd137554068928ad79e57e79ce"
   name = "k8s.io/utils"
   packages = ["exec"]
   pruneopts = ""
   revision = "52ad7309af9f9a1a880bb380e9beaea54b4d05b4"
+
+[[projects]]
+  branch = "master"
+  digest = "1:0a806edaa551c86792f1e034f82c580a1e390464c12b13e5a459140889f92434"
+  name = "mvdan.cc/unparam"
+  packages = [
+    ".",
+    "check",
+  ]
+  pruneopts = ""
+  revision = "fbb59629db34a0f69275bc336cc8c3a4dd9fbe5d"
 
 [solve-meta]
   analyzer-name = "dep"
@@ -658,10 +727,8 @@
     "google.golang.org/genproto/googleapis/pubsub/v1",
     "google.golang.org/genproto/protobuf/field_mask",
     "google.golang.org/grpc",
-    "google.golang.org/grpc/codes",
     "google.golang.org/grpc/grpclog",
     "google.golang.org/grpc/reflection",
-    "google.golang.org/grpc/status",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
