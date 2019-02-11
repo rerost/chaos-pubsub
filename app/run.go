@@ -7,6 +7,7 @@ import (
 	"github.com/rerost/chaos-pubsub/app/server"
 	"github.com/rerost/chaos-pubsub/infra/pubsub"
 	"github.com/rerost/chaos-pubsub/lib/grpcserver"
+	"github.com/rerost/chaos-pubsub/lib/interceptor/fault"
 	"github.com/rerost/chaos-pubsub/lib/interceptor/logger"
 	"github.com/srvc/fail"
 )
@@ -30,9 +31,11 @@ func Run() error {
 		),
 		grpcserver.WithGrpcServerUnaryInterceptors(
 			logger.UnaryServerInterceptor(),
+			fault.UnaryServerInterceptor(),
 		),
 		grpcserver.WithGrpcServerStreamInterceptors(
 			logger.StreamServerInterceptor(),
+			fault.StreamServerInterceptor(),
 		),
 	)
 	return fail.Wrap(s.Serve())
